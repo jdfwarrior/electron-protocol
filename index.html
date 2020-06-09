@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.70/Build/Cesium/Cesium.js"></script>
+    <link
+      href="https://cesium.com/downloads/cesiumjs/releases/1.70/Build/Cesium/Widgets/widgets.css"
+      rel="stylesheet"
+    />
+    <style>
+      #cesium {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        left: 0;
+        width: 100%;
+      }
+
+      #toggle {
+        position: absolute;
+        bottom: 50px;
+        right: 10px;
+        background-color: blue;
+        color: white;
+        padding: 10px 15px;
+        z-index: 100;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cesium"></div>
+    <button id="toggle" onClick="toggle()">Toggle Elevation</button>
+
+    <script>
+      const elevation = new Cesium.CesiumTerrainProvider({
+        url: `terrain://`,
+      });
+
+      const options = {
+        requestRenderMode: true,
+        terrainProvider: elevation,
+      };
+
+      const viewer = new Cesium.Viewer("cesium", options);
+
+      let enabled = true;
+
+      const toggle = () => {
+        if (enabled) {
+          viewer.scene.globe.terrainProvider = new Cesium.EllipsoidTerrainProvider();
+          enabled = false;
+          console.log("Default Terrain Provider");
+        } else {
+          viewer.scene.globe.terrainProvider = elevation;
+          enabled = true;
+          console.log("Loaded Terrain Provider");
+        }
+      };
+    </script>
+  </body>
+</html>
